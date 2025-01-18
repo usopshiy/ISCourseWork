@@ -1,7 +1,7 @@
 package usopshiy.is.entity;
 
 public enum Role {
-    DEFAULT,
+    ADMIN,
     SUPPLIER,
     OPERATOR
 }
