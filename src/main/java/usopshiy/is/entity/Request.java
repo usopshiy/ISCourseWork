@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import usopshiy.is.dto.RequestDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public class Request {
     private User creator;
 
     @ManyToOne
-    @JoinColumn(name = "asignee")
+    @JoinColumn(name = "assignee")
     private User assignee;
 
     @Column(name = "type", nullable = false)
@@ -37,6 +38,7 @@ public class Request {
     private LocalDate completionTime;
 
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column(name = "details", nullable = false)
@@ -46,5 +48,23 @@ public class Request {
     @PrePersist
     public void prePersist() {
         creationDate = LocalDateTime.now();
+    }
+
+    public Request updateByDto(RequestDto dto) {
+        this.type = dto.getType();
+        this.completionTime = dto.getCompletionTime();
+        this.details = dto.getDetails();
+        return this;
+    }
+
+    public void setNextStatus() {
+        switch (this.status) {
+            case ON_ASSIGNMENT:
+                this.status = Status.ASSIGNED;
+                break;
+            case ASSIGNED:
+                this.status = Status.COMPLETED;
+                break;
+        }
     }
 }
