@@ -1,5 +1,6 @@
 package usopshiy.is.service;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +27,18 @@ public class OperationService {
     private final RequestService requestService;
     private final UserService userService;
 
-    private final HashMap<String, OperationRealization> allOperations = new HashMap<>() {
-        {
-            put("createIncubator", createIncubator);
-            put("startColony", colonyStart);
-        }
-    };
+
+    private HashMap<String, OperationRealization> allOperations;
+
+    @PostConstruct
+    private void init() {
+        allOperations = new HashMap<>(){
+            {
+                put("createIncubator", createIncubator);
+                put("startColony", colonyStart);
+            }
+        };
+    }
 
     @Transactional
     public Operation startOperation(OperationDto dto) {
