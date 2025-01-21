@@ -1,5 +1,6 @@
 package usopshiy.is.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
@@ -10,9 +11,11 @@ import lombok.NoArgsConstructor;
 @Entity(name = "decorations")
 public class Decoration {
 
+    @JsonIgnore
     @EmbeddedId
     private ColonyItemKey id;
 
+    @JsonIgnore
     @ManyToOne
     @MapsId("colonyId")
     @JoinColumn(name = "colony_id")

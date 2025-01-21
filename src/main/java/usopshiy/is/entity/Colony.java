@@ -3,6 +3,8 @@ package usopshiy.is.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import usopshiy.is.dto.ColonyDto;
+
 import java.util.Set;
 
 @Entity(name = "Colony")
@@ -25,27 +27,17 @@ public class Colony {
     private Long population;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ant")
+    @JoinColumn(name = "ant_id")
     private AntSpecies ant;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "formicarium")
     private Formicarium formicarium;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Colony_thermos",
-            joinColumns = @JoinColumn(name = "colony_id"),
-            inverseJoinColumns = @JoinColumn(name = "thermometer_id")
-    )
+    @OneToMany(mappedBy = "colony")
     private Set<Thermometer> colonyThermometers;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Colony_humidities",
-            joinColumns = @JoinColumn(name = "colony_id"),
-            inverseJoinColumns = @JoinColumn(name = "device_id")
-    )
+    @OneToMany(mappedBy = "colony")
     private Set<HumidityControl> colonyHumidities;
 
     @OneToMany(mappedBy = "colony")
@@ -54,5 +46,11 @@ public class Colony {
     @PrePersist
     public void prePersist() {
         creationTimestamp = java.time.LocalDate.now();
+    }
+
+    public Colony updateByDto(ColonyDto dto) {
+        this.name = dto.getName();
+        this.population = dto.getPopulation();
+        return this;
     }
 }

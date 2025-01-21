@@ -1,5 +1,6 @@
 package usopshiy.is.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class AntSpecies {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ant_id")
@@ -29,6 +31,7 @@ public class AntSpecies {
     @NotBlank
     private String optimalHumidity;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "Ant_diet",

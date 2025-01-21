@@ -2,6 +2,7 @@ package usopshiy.is.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,11 +20,15 @@ public class HumidityControl {
     private java.time.LocalDateTime valueTimestamp;
 
     @Column(name = "value")
-    private Float value;
+    private float value;
 
     @Column(name="zone", nullable = false)
     @NotBlank
     private String zone;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
+    private Colony colony;
 
     @PreUpdate
     public void preUpdate() {
