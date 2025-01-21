@@ -28,20 +28,20 @@ public class ItemController {
     }
 
     @Operation(summary = "get item by name")
-    @GetMapping("{name}")
+    @GetMapping("/{name}")
     public Item getItemByName(@PathVariable String name) {
         return itemService.getItemByName(name);
     }
 
     @Operation(summary = "create new item in the database")
-    @PostMapping("create")
+    @PostMapping("/create")
     public MessageInfo createItem(@RequestBody @Valid ItemDto itemDto) {
         itemService.create(itemDto);
         return new MessageInfo("success");
     }
 
     @Operation(summary = "update an item in the database")
-    @PostMapping("update")
+    @PostMapping("/update")
     public MessageInfo updateItem(@RequestBody @Valid ItemDto itemDto) {
         itemService.updateItem(itemDto);
         return new MessageInfo("success");
