@@ -11,10 +11,6 @@ import java.util.List;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long>{
 
-    List<Request> getRequestsByAssigneeOrderByCreationDate(User assignee);
-
-    List<Request> getRequestsByCreatorOrderByCreationDate(User creator);
-
     @Query("SELECT p FROM Requests p WHERE p.creator = ?1 AND p.status != 'COMPLETED'")
     List<Request> getActiveRequestByCreator(User creator);
 

@@ -24,7 +24,7 @@ public class RequestService {
         return requestRepository.save(obj);
     }
 
-    public Request update(RequestDto dto){
+    public void update(RequestDto dto){
         Request request = requestRepository.findById(dto.getId()).orElse(null);
         User user = userService.getCurrentUser();
         if (request == null) {
@@ -35,7 +35,7 @@ public class RequestService {
         if (dto.getCompletionTime() != null) {
             request.setCompletionTime(dto.getCompletionTime());
         }
-        return requestRepository.save(request);
+        requestRepository.save(request);
     }
 
     //TODO: logic of creating proxy-request with creator==assignee for self-started operations
