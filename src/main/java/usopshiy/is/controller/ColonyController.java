@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import usopshiy.is.dto.ColonyDto;
 import usopshiy.is.dto.DecorationDto;
 import usopshiy.is.dto.MessageInfo;
 import usopshiy.is.entity.Colony;
@@ -31,6 +32,14 @@ public class ColonyController {
     public Colony getColonyById(@PathVariable Long id) {
         return colonyService.getColonyById(id);
     }
+
+    @Operation(summary = "update a colony")
+    @PostMapping("/update")
+    public MessageInfo updateColony(@RequestBody ColonyDto dto) {
+        colonyService.updateColony(dto);
+        return new MessageInfo("success");
+    }
+
 
     @Operation(summary = "add decoration for a colony")
     @PostMapping("/{id}/add-decoration")

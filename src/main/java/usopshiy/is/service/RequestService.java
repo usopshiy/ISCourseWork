@@ -3,6 +3,7 @@ package usopshiy.is.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import usopshiy.is.dto.RequestDto;
+import usopshiy.is.entity.Operation;
 import usopshiy.is.entity.Request;
 import usopshiy.is.entity.Status;
 import usopshiy.is.entity.User;
@@ -24,6 +25,14 @@ public class RequestService {
         return requestRepository.save(obj);
     }
 
+    public Request getById(Long id){
+        Request request = requestRepository.findById(id).orElse(null);
+        if(request == null){
+            throw new RuntimeException("Request not found");
+        }
+        return request;
+    }
+
     public void update(RequestDto dto){
         Request request = requestRepository.findById(dto.getId()).orElse(null);
         User user = userService.getCurrentUser();
@@ -38,9 +47,15 @@ public class RequestService {
         requestRepository.save(request);
     }
 
-    //TODO: logic of creating proxy-request with creator==assignee for self-started operations
-    public Request createSelf() {
-        return new Request();
+    public Request createSelf(Operation operation) {
+        Request request = Request.builder()
+                .creator(userService.getCurrentUser())
+                .assignee(userService.getCurrentUser())
+                .type(operation.getType())
+                .status(Status.ASSIGNED)
+                .details("complete an operation you started")
+                .build();
+        return requestRepository.save(request);
     }
 
     public List<Request> getRequests() {

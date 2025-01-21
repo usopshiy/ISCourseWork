@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import usopshiy.is.dto.OperationDto;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -20,11 +21,11 @@ public class Operation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "request_id")
+    @JoinColumn(name = "request_id", nullable = false)
     private Request request;
 
     @ManyToOne
-    @JoinColumn(name = "colony_id", nullable = false)
+    @JoinColumn(name = "colony_id")
     private Colony colony;
 
     @Column(name = "type", nullable = false)
@@ -41,11 +42,20 @@ public class Operation {
     @Column(name = "last_interaction")
     private LocalDateTime lastInteraction;
 
+    @Column(name = "stage_description")
+    private String stageDescription;
+
     @OneToMany(mappedBy = "operation")
     Set<UsedItem> usedItems;
 
     @PrePersist
     private void prePersist() {
         creationDate = LocalDateTime.now();
+        stage = 0;
+    }
+
+    public Operation updateByDto(OperationDto dto) {
+        this.type = dto.getType();
+        return this;
     }
 }
