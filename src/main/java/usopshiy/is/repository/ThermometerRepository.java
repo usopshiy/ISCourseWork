@@ -9,7 +9,6 @@ import usopshiy.is.entity.Thermometer;
 @Repository
 public interface ThermometerRepository extends JpaRepository<Thermometer, Long> {
 
-    //TODO: implement function in PostgreSQL
-    //@Query(value = "CALL CHECK_TEMPS(:colonyId, :min, :max)", nativeQuery = true)
+    @Query(value = "SELECT check_temps(:colonyId, :min, :max)", nativeQuery = true)
     boolean checkTemps(@Param("colonyId") Long colonyId, @Param("min") float min, @Param("min") float max);
 }

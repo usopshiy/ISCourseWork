@@ -10,7 +10,6 @@ import usopshiy.is.entity.Decoration;
 @Repository
 public interface DecorationRepository extends JpaRepository<Decoration, ColonyItemKey> {
 
-    //TODO actually implement such procedure in PostrgeSQL
-    //@Query(value = "CALL CREATE_DEC_BY_VALUES(:colonyId, :itemName, :amount)", nativeQuery = true)
+    @Query(value = "CALL create_dec_by_values(:colonyId, :itemName, :amount)", nativeQuery = true)
     void createByValues(@Param("colonyId") Long colonyId, @Param("itemName") String itemName,  @Param("amount") int amount);
 }

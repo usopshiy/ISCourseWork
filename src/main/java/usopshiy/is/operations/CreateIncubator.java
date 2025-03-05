@@ -2,8 +2,6 @@ package usopshiy.is.operations;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import usopshiy.is.entity.*;
@@ -37,20 +35,16 @@ public class CreateIncubator implements OperationRealization {
     };
 
 
+    @Transactional
     @Override
     public Operation executeStage(Operation operation) {
-        switch (operation.getStage()) {
-            case 0:
-                return stage0(operation);
-            case 2:
-                return stage2(operation);
-            case 3:
-                return stage3(operation);
-            case 4:
-                return operation; //fail-safe
-            default:
-                return informationalStage(operation);
-        }
+        return switch (operation.getStage()) {
+            case 0 -> stage0(operation);
+            case 2 -> stage2(operation);
+            case 3 -> stage3(operation);
+            case 4 -> operation; //fail-safe
+            default -> informationalStage(operation);
+        };
     }
 
     @Transactional
