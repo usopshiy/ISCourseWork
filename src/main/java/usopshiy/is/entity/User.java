@@ -1,5 +1,6 @@
 package usopshiy.is.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +27,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     @Column(name = "user_id")
+    @JsonIgnore
     private Long id;
 
     @Column(name = "username", unique = true, nullable = false)
@@ -34,8 +36,10 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     @NotBlank
+    @JsonIgnore
     private String password;
 
+    @JsonIgnore
     @Column(name = "role", nullable = false)
     private Role role;
 

@@ -1,16 +1,21 @@
 package usopshiy.is.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import usopshiy.is.entity.Request;
 import usopshiy.is.entity.Status;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestDto {
 
     @JsonProperty
@@ -18,23 +23,13 @@ public class RequestDto {
 
     @NotBlank
     @JsonProperty
-    private String creator;
-
-    @JsonProperty
-    private String assignee;
-
-    @NotBlank
-    @JsonProperty
     private String type;
-
-    @NotNull
-    @JsonProperty
-    private LocalDateTime creationDate;
 
     @JsonProperty
     private LocalDate completionTime;
 
     @JsonProperty
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @NotBlank
@@ -43,15 +38,7 @@ public class RequestDto {
 
     public RequestDto(Request obj) {
         this.id = obj.getId();
-        this.creator = obj.getCreator().getUsername();
-        if (obj.getAssignee() != null) {
-            this.assignee = obj.getAssignee().getUsername();
-        } else {
-            this.assignee = null;
-        }
         this.type = obj.getType();
-        this.creationDate = obj.getCreationDate();
-        this.completionTime = obj.getCompletionTime();
         this.status = obj.getStatus();
         this.details = obj.getDetails();
     }

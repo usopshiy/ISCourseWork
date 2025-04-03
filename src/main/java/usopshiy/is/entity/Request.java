@@ -68,6 +68,7 @@ public class Request {
                 break;
             case ASSIGNED:
                 this.status = Status.COMPLETED;
+                this.completionTime = LocalDate.now();
                 break;
         }
     }

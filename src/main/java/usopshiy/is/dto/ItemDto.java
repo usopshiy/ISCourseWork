@@ -3,14 +3,15 @@ package usopshiy.is.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import usopshiy.is.entity.Item;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemDto {
-
-    @JsonProperty
-    private Long id;
 
     @JsonProperty
     @NotBlank
@@ -21,7 +22,6 @@ public class ItemDto {
     private int stored;
 
     public ItemDto(Item obj) {
-        this.id = obj.getId();
         this.name = obj.getName();
         this.stored = obj.getStored();
     }

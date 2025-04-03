@@ -3,10 +3,14 @@ package usopshiy.is.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import usopshiy.is.entity.Colony;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ColonyDto {
 
     @JsonProperty

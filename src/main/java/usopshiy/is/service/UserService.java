@@ -39,6 +39,7 @@ public class UserService {
 
     public User getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(username);
         return getByUsername(username);
     }
 }

@@ -1,5 +1,6 @@
 package usopshiy.is.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ public class Thermometer {
     @NotBlank
     private String zone;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     private Colony colony;

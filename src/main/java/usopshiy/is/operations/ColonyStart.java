@@ -9,6 +9,7 @@ import usopshiy.is.repository.OperationRepository;
 import usopshiy.is.repository.UsedItemsRepository;
 import usopshiy.is.service.HumidityService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ColonyStart implements OperationRealization {
             add("Положите инкубатор на арену, выньте ватный тампон и накройте арену крышкой"); //4
             add("Ожидайте в течение часа - если муравьи не переселятся - проверьте уровни влажности и света. В случае если " +
                     "ситуация не изменится за 2-3 часа, простимулируйте переселение оставив свет на арене."); //5
-            add("Опциональный этап: начните декорирование арены формикария через соотвествующий интерфейс."); //6
+            add("Операция завершена. Опционально: начните декорирование арены формикария через соотвествующий интерфейс."); //6
         }
     };
 
@@ -42,6 +43,7 @@ public class ColonyStart implements OperationRealization {
         return switch (operation.getStage()) {
             case 0 -> stage0(operation);
             case 1 -> stage1(operation);
+            case 5 -> stage5(operation);
             case 6 -> operation; //fail-safe
             default -> informationalStage(operation);
         };
@@ -84,6 +86,15 @@ public class ColonyStart implements OperationRealization {
         else {
             operation.setStageDescription("Incorrect humidity: check readings and try again");
         }
+        operation.setLastInteraction(LocalDateTime.now());
+        return operationRepository.save(operation);
+    }
+
+    private Operation stage5(Operation operation) {
+        operation.setStage(6);
+        operation.getRequest().setStatus(Status.COMPLETED);
+        operation.getRequest().setCompletionTime(LocalDate.now());
+        operation.setStageDescription(stageDescriptions.get(operation.getStage()));
         operation.setLastInteraction(LocalDateTime.now());
         return operationRepository.save(operation);
     }

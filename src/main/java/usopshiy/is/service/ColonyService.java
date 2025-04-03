@@ -1,7 +1,9 @@
 package usopshiy.is.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import usopshiy.is.dto.ColonyDto;
 import usopshiy.is.dto.DecorationDto;
 import usopshiy.is.entity.Colony;
@@ -18,8 +20,15 @@ public class ColonyService {
     private final DecorationRepository decorationRepository;
     private final UserService userService;
 
+    @Transactional(readOnly = true)
     public List<Colony> getAllColonies() {
-        return colonyRepository.findAll();
+        try {
+            return colonyRepository.findAll();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public Colony getColonyById(Long id) {
@@ -39,6 +48,11 @@ public class ColonyService {
     }
 
     public void addDecoration(Long colonyId, DecorationDto dto) {
-        decorationRepository.createByValues(colonyId, dto.getItemName(), dto.getAmount());
+        try {
+            decorationRepository.createByValues(colonyId, dto.getItemName(), dto.getAmount());
+        }
+        catch (JpaSystemException e) {
+            return;
+        }
     }
 }

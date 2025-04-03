@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -27,5 +28,5 @@ public class Food {
     private int stored;
 
     @ManyToMany(mappedBy = "diet")
-    private Set<AntSpecies> likedBy;
+    private List<AntSpecies> likedBy;
 }

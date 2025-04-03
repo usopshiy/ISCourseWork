@@ -1,10 +1,12 @@
 package usopshiy.is.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import usopshiy.is.dto.ColonyDto;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Colony")
@@ -26,22 +28,22 @@ public class Colony {
     @Column(name = "population")
     private Long population;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ant_id")
     private AntSpecies ant;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "formicarium")
     private Formicarium formicarium;
 
     @OneToMany(mappedBy = "colony")
-    private Set<Thermometer> colonyThermometers;
+    private List<Thermometer> colonyThermometers;
 
     @OneToMany(mappedBy = "colony")
-    private Set<HumidityControl> colonyHumidities;
+    private List<HumidityControl> colonyHumidities;
 
     @OneToMany(mappedBy = "colony")
-    private Set<Decoration> decorations;
+    private List<Decoration> decorations;
 
     @PrePersist
     public void prePersist() {

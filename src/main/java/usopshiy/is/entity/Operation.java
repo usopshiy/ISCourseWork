@@ -1,5 +1,6 @@
 package usopshiy.is.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 import usopshiy.is.dto.OperationDto;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity(name = "Operations")
@@ -45,8 +46,9 @@ public class Operation {
     @Column(name = "stage_description")
     private String stageDescription;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "operation")
-    Set<UsedItem> usedItems;
+    List<UsedItem> usedItems;
 
     @PrePersist
     private void prePersist() {

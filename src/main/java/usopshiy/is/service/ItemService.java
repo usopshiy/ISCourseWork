@@ -19,7 +19,7 @@ public class ItemService {
     }
 
     public void updateItem(ItemDto dto) {
-        Item item = itemRepository.findById(dto.getId()).orElse(null);
+        Item item = itemRepository.findByName(dto.getName());
         if (item == null) {
             throw new RuntimeException("Item not found");
         }
