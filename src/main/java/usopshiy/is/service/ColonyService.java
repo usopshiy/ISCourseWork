@@ -18,7 +18,6 @@ public class ColonyService {
 
     private final ColonyRepository colonyRepository;
     private final DecorationRepository decorationRepository;
-    private final UserService userService;
 
     @Transactional(readOnly = true)
     public List<Colony> getAllColonies() {
@@ -52,7 +51,8 @@ public class ColonyService {
             decorationRepository.createByValues(colonyId, dto.getItemName(), dto.getAmount());
         }
         catch (JpaSystemException e) {
-            return;
+            e.printStackTrace();
+            throw e;
         }
     }
 }

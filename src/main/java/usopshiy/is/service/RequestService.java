@@ -18,11 +18,10 @@ public class RequestService {
     private final RequestRepository requestRepository;
     private final UserService userService;
 
-    public Request create(RequestDto dto){
+    public void create(RequestDto dto){
         Request obj = new Request().updateByDto(dto);
         obj.setCreator(userService.getCurrentUser());
         obj.setStatus(Status.ON_ASSIGNMENT);
-        return requestRepository.save(obj);
     }
 
     public Request getById(Long id){

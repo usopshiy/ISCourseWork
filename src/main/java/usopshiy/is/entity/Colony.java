@@ -1,13 +1,11 @@
 package usopshiy.is.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import usopshiy.is.dto.ColonyDto;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "Colony")
 @Data

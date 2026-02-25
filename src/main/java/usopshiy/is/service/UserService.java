@@ -13,16 +13,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User save(User user) {
-        return userRepository.save(user);
+    public void save(User user) {
+        userRepository.save(user);
     }
 
-    public User create(User user) {
+    public void create(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("User with such username already exists");
         }
 
-        return save(user);
+        save(user);
     }
 
     public User getByUsername(String username) {
