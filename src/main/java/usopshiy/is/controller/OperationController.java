@@ -25,7 +25,7 @@ public class OperationController {
         return operationService.startOperation(dto);
     }
 
-    @Operation(summary = "progress an operation")
+    @Operation(summary = "progress an operation by 1 stage")
     @GetMapping("progress/{id}")
     public usopshiy.is.entity.Operation progress(@PathVariable Long id) {
         return operationService.progressById(id);

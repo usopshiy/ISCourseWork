@@ -19,14 +19,14 @@ public class AdminController {
     private final ThermometerService thermometerService;
     private final HumidityService humidityService;
 
-    @Operation(summary = "set thermo value")
+    @Operation(summary = "set thermo emulation value")
     @PostMapping("/set/thermo")
     public MessageInfo setThermo(@RequestBody ValueDto value) {
         thermometerService.setTemperature(value.getValue());
         return new MessageInfo("success");
     }
 
-    @Operation(summary = "set humidity value")
+    @Operation(summary = "set humidity emulation value")
     @PostMapping("/set/humidity")
     public MessageInfo setHumidity(@RequestBody ValueDto value) {
         humidityService.setHumidity(value.getValue());
