@@ -17,12 +17,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User create(User user) {
+    public void create(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("User with such username already exists");
         }
 
-        return save(user);
+        save(user);
     }
 
     public User getByUsername(String username) {
@@ -39,7 +39,6 @@ public class UserService {
 
     public User getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println(username);
         return getByUsername(username);
     }
 }

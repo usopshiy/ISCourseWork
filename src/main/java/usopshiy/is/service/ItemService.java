@@ -30,8 +30,8 @@ public class ItemService {
         return itemRepository.findByName(name);
     }
 
-    public Item create(ItemDto dto) {
+    public void create(ItemDto dto) {
         Item item = new Item().updateByDto(dto);
-        return itemRepository.save(item);
+        itemRepository.save(item);
     }
 }
