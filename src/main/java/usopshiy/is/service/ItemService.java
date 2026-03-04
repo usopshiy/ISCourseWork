@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import usopshiy.is.dto.ItemDto;
 import usopshiy.is.entity.Item;
+import usopshiy.is.exception.NotFoundException;
 import usopshiy.is.repository.ItemRepository;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class ItemService {
     public void updateItem(ItemDto dto) {
         Item item = itemRepository.findByName(dto.getName());
         if (item == null) {
-            throw new RuntimeException("Item not found");
+            throw new NotFoundException("Item not found");
         }
         itemRepository.save(item.updateByDto(dto));
     }

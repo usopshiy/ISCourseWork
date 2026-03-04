@@ -1,42 +1,43 @@
 package usopshiy.is.service;
 
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import usopshiy.is.dto.OperationDto;
 import usopshiy.is.entity.*;
-import usopshiy.is.operations.ColonyStart;
-import usopshiy.is.operations.CreateIncubator;
+import usopshiy.is.exception.NotFoundException;
 import usopshiy.is.operations.OperationRealization;
 import usopshiy.is.repository.OperationRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class OperationService {
 
     private final OperationRepository operationRepository;
-    private final CreateIncubator createIncubator;
-    private final ColonyStart colonyStart;
     private final ColonyService colonyService;
     private final RequestService requestService;
     private final UserService userService;
 
+    // Spring injects all OperationRealization beans as a list automatically.
+    // We immediately index them by type for O(1) lookup.
+    private final Map<String, OperationRealization> allOperations;
 
-    private HashMap<String, OperationRealization> allOperations;
-
-    @PostConstruct
-    private void init() {
-        allOperations = new HashMap<>(){
-            {
-                put("createIncubator", createIncubator);
-                put("startColony", colonyStart);
-            }
-        };
+    public OperationService(
+            OperationRepository operationRepository,
+            ColonyService colonyService,
+            RequestService requestService,
+            UserService userService,
+            List<OperationRealization> operationRealizations
+    ) {
+        this.operationRepository = operationRepository;
+        this.colonyService = colonyService;
+        this.requestService = requestService;
+        this.userService = userService;
+        this.allOperations = operationRealizations.stream()
+                .collect(Collectors.toMap(OperationRealization::getType, Function.identity()));
     }
 
     @Transactional
@@ -48,41 +49,34 @@ public class OperationService {
             operation.setColony(colony);
         }
 
-        Request request;
-        if (dto.getRequest_id() != null) {
-            request = requestService.getById(dto.getRequest_id());
-        }
-        else {
-            request = requestService.createSelf(operation);
-        }
+        Request request = dto.getRequest_id() != null
+                ? requestService.getById(dto.getRequest_id())
+                : requestService.createSelf(operation);
         operation.setRequest(request);
 
         return progress(operation);
     }
 
     public Operation progressById(Long id) {
-        Operation operation = operationRepository.findById(id).orElse(null);
-        if (operation == null) {
-            throw new RuntimeException("Operation not found");
-        }
+        Operation operation = operationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Operation not found: " + id));
         return progress(operation);
     }
 
     public Operation progress(Operation operation) {
-        return allOperations.get(operation.getType()).executeStage(operation);
+        OperationRealization realization = allOperations.get(operation.getType());
+        if (realization == null) {
+            throw new NotFoundException("Unknown operation type: " + operation.getType());
+        }
+        return realization.executeStage(operation);
     }
 
     public List<Operation> getAllUserOperations() {
-        List<Operation> operations = operationRepository.findAll();
         User currentUser = userService.getCurrentUser();
-        try {
-            operations = operations.stream()
-                    .filter(item -> item.getRequest().getCreator() == currentUser && item.getRequest().getStatus() != Status.COMPLETED)
-                    .toList();
-        }
-        catch (NullPointerException e) {
-            return new ArrayList<>();
-        }
-        return operations;
+        return operationRepository.findAll().stream()
+                .filter(op -> op.getRequest() != null
+                        && op.getRequest().getCreator().equals(currentUser)
+                        && op.getRequest().getStatus() != Status.COMPLETED)
+                .collect(Collectors.toList());
     }
 }

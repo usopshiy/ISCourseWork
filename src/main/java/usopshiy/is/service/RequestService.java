@@ -7,6 +7,7 @@ import usopshiy.is.entity.Operation;
 import usopshiy.is.entity.Request;
 import usopshiy.is.entity.Status;
 import usopshiy.is.entity.User;
+import usopshiy.is.exception.NotFoundException;
 import usopshiy.is.repository.RequestRepository;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class RequestService {
     public Request getById(Long id){
         Request request = requestRepository.findById(id).orElse(null);
         if(request == null){
-            throw new RuntimeException("Request not found");
+            throw new NotFoundException("Request not found");
         }
         return request;
     }
@@ -37,7 +38,7 @@ public class RequestService {
         Request request = requestRepository.findById(dto.getId()).orElse(null);
         User user = userService.getCurrentUser();
         if (request == null) {
-            throw new RuntimeException("No such request");
+            throw new NotFoundException("No such request");
         }
         request.setAssignee(user);
         request.setNextStatus();

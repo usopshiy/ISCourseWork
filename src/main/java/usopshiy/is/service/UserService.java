@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import usopshiy.is.entity.User;
+import usopshiy.is.exception.AlreadyExistsException;
+import usopshiy.is.exception.NotFoundException;
 import usopshiy.is.repository.UserRepository;
 
 @Service
@@ -19,7 +21,7 @@ public class UserService {
 
     public void create(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("User with such username already exists");
+            throw new AlreadyExistsException("User with such username already exists");
         }
 
         save(user);
@@ -28,7 +30,7 @@ public class UserService {
     public User getByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if(user == null) {
-            throw new RuntimeException("User not found");
+            throw new NotFoundException("User not found");
         }
          return user;
     }

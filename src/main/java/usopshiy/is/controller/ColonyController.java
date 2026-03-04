@@ -2,8 +2,8 @@ package usopshiy.is.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import usopshiy.is.dto.ColonyDto;
 import usopshiy.is.dto.DecorationDto;
@@ -35,7 +35,7 @@ public class ColonyController {
 
     @Operation(summary = "update a colony")
     @PostMapping("/update")
-    public MessageInfo updateColony(@RequestBody ColonyDto dto) {
+    public MessageInfo updateColony(@RequestBody @Valid ColonyDto dto) {
         colonyService.updateColony(dto);
         return new MessageInfo("success");
     }
@@ -43,14 +43,8 @@ public class ColonyController {
 
     @Operation(summary = "add decoration for a colony")
     @PostMapping("/{id}/add-decoration")
-    public MessageInfo addDecoration(@PathVariable Long id, @RequestBody DecorationDto dto) {
+    public MessageInfo addDecoration(@PathVariable Long id, @RequestBody @Valid DecorationDto dto) {
         colonyService.addDecoration(id, dto);
         return new MessageInfo("success");
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MessageInfo handleException(Exception e) {
-        return new MessageInfo(e.getMessage());
     }
 }

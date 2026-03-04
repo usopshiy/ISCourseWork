@@ -2,10 +2,9 @@ package usopshiy.is.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import usopshiy.is.dto.MessageInfo;
 import usopshiy.is.dto.OperationDto;
 import usopshiy.is.service.OperationService;
 
@@ -21,7 +20,7 @@ public class OperationController {
 
     @Operation(summary = "start an operation")
     @PostMapping("/start")
-    public usopshiy.is.entity.Operation start(@RequestBody OperationDto dto) {
+    public usopshiy.is.entity.Operation start(@RequestBody @Valid OperationDto dto) {
         return operationService.startOperation(dto);
     }
 
@@ -35,11 +34,5 @@ public class OperationController {
     @GetMapping("")
     public List<usopshiy.is.entity.Operation> getAllActiveOperations() {
         return operationService.getAllUserOperations();
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MessageInfo exceptionHandler(Exception ex) {
-        return new MessageInfo(ex.getMessage());
     }
 }

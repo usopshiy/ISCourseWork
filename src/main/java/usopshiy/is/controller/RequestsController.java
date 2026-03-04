@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import usopshiy.is.dto.MessageInfo;
 import usopshiy.is.dto.RequestDto;
@@ -57,11 +56,5 @@ public class RequestsController {
     public MessageInfo updateRequest(@RequestBody @Valid RequestDto requestDto) {
         requestService.update(requestDto);
         return new MessageInfo("success");
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MessageInfo handleException(Exception ex) {
-        return new MessageInfo(ex.getMessage());
     }
 }

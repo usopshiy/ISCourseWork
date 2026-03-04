@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import usopshiy.is.dto.ColonyDto;
 import usopshiy.is.dto.DecorationDto;
 import usopshiy.is.entity.Colony;
+import usopshiy.is.exception.NotFoundException;
 import usopshiy.is.repository.ColonyRepository;
 import usopshiy.is.repository.DecorationRepository;
 
@@ -35,7 +36,7 @@ public class ColonyService {
     public Colony getColonyById(Long id) {
         Colony colony = colonyRepository.findById(id).orElse(null);
         if (colony == null) {
-            throw new RuntimeException("Colony not found");
+            throw new NotFoundException("Colony not found");
         }
         else return colony;
     }
@@ -43,7 +44,7 @@ public class ColonyService {
     public void updateColony(ColonyDto colonyDto) {
         Colony colony = colonyRepository.findById(colonyDto.getId()).orElse(null);
         if (colony == null) {
-            throw new RuntimeException("Colony not found");
+            throw new NotFoundException("Colony not found");
         }
         colonyRepository.save(colony.updateByDto(colonyDto));
     }

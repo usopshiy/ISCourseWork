@@ -49,7 +49,7 @@ public class Colony {
     }
 
     public Colony updateByDto(ColonyDto dto) {
-        this.name = dto.getName();
+        this.name = dto .getName();
         this.population = dto.getPopulation();
         return this;
     }

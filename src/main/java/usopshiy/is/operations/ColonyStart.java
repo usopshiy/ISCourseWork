@@ -36,6 +36,10 @@ public class ColonyStart implements OperationRealization {
         }
     };
 
+    @Override
+    public String getType() {
+        return "Start colony";
+    }
 
     @Transactional
     @Override

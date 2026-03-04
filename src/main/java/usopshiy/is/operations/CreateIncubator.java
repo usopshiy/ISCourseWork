@@ -34,6 +34,10 @@ public class CreateIncubator implements OperationRealization {
         }
     };
 
+    @Override
+    public String getType() {
+        return "Create incubator";
+    }
 
     @Transactional
     @Override
