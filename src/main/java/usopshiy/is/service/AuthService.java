@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import usopshiy.is.dto.JwtAuthenticationResponse;
 import usopshiy.is.dto.SignInRequest;
 import usopshiy.is.dto.SignUpRequest;
+import usopshiy.is.entity.Role;
 import usopshiy.is.entity.User;
 
 @Service
@@ -27,6 +28,9 @@ public class AuthService {
                 .role(request.getRole())
                 .build();
 
+        if (user.getRole() == Role.ADMIN) {
+            throw new IllegalArgumentException("Can't register admin user!");
+        }
         userService.create(user);
 
         var jwt = jwtService.generateToken(user);

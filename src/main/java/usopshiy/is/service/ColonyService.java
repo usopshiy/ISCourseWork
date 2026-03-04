@@ -52,7 +52,7 @@ public class ColonyService {
             decorationRepository.createByValues(colonyId, dto.getItemName(), dto.getAmount());
         }
         catch (JpaSystemException e) {
-            return;
+            throw e;
         }
     }
 }

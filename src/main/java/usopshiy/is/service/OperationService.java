@@ -14,7 +14,6 @@ import usopshiy.is.repository.OperationRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -77,9 +76,9 @@ public class OperationService {
         List<Operation> operations = operationRepository.findAll();
         User currentUser = userService.getCurrentUser();
         try {
-            operations.stream()
+            operations = operations.stream()
                     .filter(item -> item.getRequest().getCreator() == currentUser && item.getRequest().getStatus() != Status.COMPLETED)
-                    .collect(Collectors.toUnmodifiableList());
+                    .toList();
         }
         catch (NullPointerException e) {
             return new ArrayList<>();
